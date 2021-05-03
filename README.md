@@ -1,12 +1,11 @@
 # EvergreenHUD
 
-EvergreenHUD is a forge mod to improve and add upon your heads up display.
-I, Xander, have been working on this mod for over 3 months and believe it really
-is the best HUD mod out there for 1.8.
+EvergreenHUD is a Minecraft mod developed for every version and modding platform people love. 
+From a PvPer to a casual singleplayer kinda guy, this mod will have everything you desire. Also,
+it is designed *for* power-users *by* a power-user so everyone's configuration will be unique!
 
 #### Announcement
-I would love if someone could work on a multi-version system for the mod as I
-think it could become very popular for fabric players and maybe even modpacks.
+If you would like to help me on my endeavour in creating a multi-version abstraction system:
 
 *Contact me on discord @ isXander#0162*
 
@@ -47,26 +46,43 @@ Now you will be able to open the folder as a project in your chosen IDE.
 
 ## Testing
 
-To test the mod, you will need to use a run configuration.
+To test the mod, you will need to add a few run configurations.
 
-Add an application run configuration with the following details
+Create the following run configurations in your favourite IDE:
 
-    Classpath: EvergreenHUD.main
+    Type: Application
+    Name: Run Forge
+    Classpath: EvergreenHUD.forge-1.8.9.main
     Main Class: GradleStart
+
+    Type: Application
+    Name: Run Fabric
+    Classpath: EvergreenHUD.fabric-1.16.5.main
+    Main Class: net.fabricmc.devlaunchinjector.Main
 
 ## Deployment
 
 When deploying, you will need to use gradle to build the project.
 
-Add the following line to a new gradle run configuration
+You can find a list of the build configurations you will need to build every version of the mod.
 
-    clean build
+    Type: Gradle
+    Name: Build Forge
+    Classpath: EvergreenHUD.forge-1.8.9.main
+    Tasks: clean build
+
+    Type: Gradle
+    Name: Build Fabric
+    Classpath: EvergreenHUD.fabric-1.8.9.main
+    Tasks: clean build
 
 Once built, add the jar file to the `mods` folder in your minecraft directory commonly found in `%appdata%/.minecraft`
 
 ## Contributing
 
 Please make sure to make a useful contribution that will benefit either the user or fellow developers in a noticeable way.
+
+In addition, contributions must be tested in all minecraft versions supported and provide pictures if applicable.
 
 ## Authors
 
