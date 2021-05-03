@@ -37,14 +37,6 @@ public interface Listenable {
 
     }
 
-    default void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
-
-    }
-
-    default void onLivingHurt(LivingHurtEvent event) {
-
-    }
-
     default void onPacketReceive(PacketEvent.Incoming event) {
 
     }

@@ -67,16 +67,6 @@ public class EventManager {
     }
 
     @Subscribe
-    public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
-        listenables.stream().filter(Listenable::canReceiveEvents).forEach((listenable -> listenable.onLivingUpdate(event)));
-    }
-
-    @Subscribe
-    public void onLivingHurt(LivingHurtEvent event) {
-        listenables.stream().filter(Listenable::canReceiveEvents).forEach((listenable -> listenable.onLivingHurt(event)));
-    }
-
-    @Subscribe
     public void onPacketReceive(PacketEvent.Incoming event) {
         listenables.stream().filter(Listenable::canReceiveEvents).forEach((listenable -> listenable.onPacketReceive(event)));
     }

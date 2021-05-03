@@ -16,15 +16,12 @@
 package co.uk.isxander.evergreenhud.elements.impl;
 
 import co.uk.isxander.evergreenhud.elements.Element;
+import co.uk.isxander.evergreenhud.event.impl.AttackEntityEvent;
+import co.uk.isxander.evergreenhud.event.impl.ClientTickEvent;
 import co.uk.isxander.evergreenhud.settings.impl.IntegerSetting;
-import co.uk.isxander.xanderlib.event.PacketEvent;
 import co.uk.isxander.evergreenhud.settings.impl.BooleanSetting;
 import co.uk.isxander.evergreenhud.settings.impl.StringSetting;
 import co.uk.isxander.evergreenhud.elements.ElementData;
-import net.minecraft.entity.Entity;
-import net.minecraft.network.play.server.S19PacketEntityStatus;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class ElementCombo extends Element {
 
@@ -64,7 +61,7 @@ public class ElementCombo extends Element {
     }
 
     @Override
-    public void onClientTick(TickEvent.ClientTickEvent event) {
+    public void onClientTick(ClientTickEvent event) {
         if (System.currentTimeMillis() - lastHitTime >= secondsComboDiscard.get() * 1000L) {
             currentCombo = 0;
         }
@@ -72,12 +69,10 @@ public class ElementCombo extends Element {
 
     @Override
     public void onAttackEntity(AttackEntityEvent event) {
-        if (event.isCanceled())
-            return;
-        if (event.entity != mc.thePlayer) {
+        if (event.attacker.id() != mc.player().id()) {
             return;
         }
-        this.sentAttack = event.target.getEntityId();
+        this.sentAttack = event.target.id();
         this.sentAttackTime = System.currentTimeMillis();
     }
 
@@ -95,7 +90,7 @@ public class ElementCombo extends Element {
                 return;
             }
 
-            if (this.sentAttack != -1 && target.getEntityId() == this.sentAttack) {
+            if (this.sentAttack != -1 && target.id() == this.sentAttack) {
                 this.sentAttack = -1;
                 if (System.currentTimeMillis() - this.sentAttackTime > 2000L) {
                     this.sentAttackTime = 0L;

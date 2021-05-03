@@ -112,21 +112,7 @@ public class EvergreenHUD implements Constants {
         if (disabled) {
             notifications.push("EvergreenHUD",
                     "The current version of this mod has been blacklisted.\n"
-                    + "Please check the discord server for updates.\n"
-                    + "Click to join the discord.",
-
-            () -> {
-                if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                    try {
-                        Desktop.getDesktop().browse(new URI("https://discord.gg/AJv5ZnNT8q"));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    Notifications.INSTANCE.pushNotification("EvergreenHUD", "Unfortunately, your computer does not seem to support web-browsing.");
-                }
-                return null;
-            });
+                    + "Please check the discord server for updates.");
 
             return;
         }
