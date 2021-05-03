@@ -16,10 +16,14 @@
 package co.uk.isxander.evergreenhud.elements.impl;
 
 import co.uk.isxander.evergreenhud.elements.Element;
+import co.uk.isxander.evergreenhud.event.impl.RenderHud;
 import co.uk.isxander.evergreenhud.settings.impl.ArraySetting;
 import co.uk.isxander.evergreenhud.settings.impl.BooleanSetting;
 import co.uk.isxander.evergreenhud.settings.impl.IntegerSetting;
 import co.uk.isxander.evergreenhud.elements.ElementData;
+import co.uk.isxander.xanderlib.utils.GuiUtils;
+import co.uk.isxander.xanderlib.utils.HitBox2D;
+import net.apolloclient.utils.GLRenderer;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -54,50 +58,48 @@ public class ElementCoordinates extends Element {
     }
 
     @Override
-    public void render(RenderGameOverlayEvent event) {
-        mc.mcProfiler.startSection(getMetadata().getName());
+    public void render(RenderHud event) {
         HitBox2D hitbox = getHitbox(1, getPosition().getScale());
-        float x = getPosition().getRawX(event.resolution);
-        float y = getPosition().getRawY(event.resolution);
+        float x = getPosition().getRawX(resolution);
+        float y = getPosition().getRawY(resolution);
         GLRenderer.drawRectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height, getBgColor());
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(getPosition().getScale(), getPosition().getScale(), 0);
+        gl11.push();
+        gl11.scale(getPosition().getScale(), getPosition().getScale(), 0);
 
         int i = 0;
         for (String line : getMultiValue()) {
-            float posY = ((y / getPosition().getScale()) + (mc.fontRendererObj.FONT_HEIGHT * i) + (verticalSpacing.get() * i));
+            float posY = ((y / getPosition().getScale()) + (fr.fontHeight() * i) + (verticalSpacing.get() * i));
             switch (getAlignment()) {
                 case RIGHT:
-                    float posX = (x - mc.fontRendererObj.getStringWidth(line)) / getPosition().getScale();
+                    float posX = (x - fr.stringWidth(line)) / getPosition().getScale();
 
                     if (useChroma())
-                        GuiUtils.drawChromaString(mc.fontRendererObj, line, posX, posY, renderShadow(), false);
+                        GuiUtils.drawChromaString(fr, line, posX, posY, renderShadow(), false);
                     else
-                        mc.fontRendererObj.drawString(line, posX, posY, getTextColor().getRGB(), renderShadow());
+                        fr.drawString(line, posX, posY, getTextColor().getRGB(), renderShadow());
                     break;
                 case CENTER:
                     posX = x / getPosition().getScale();
 
                     if (useChroma())
-                        GuiUtils.drawChromaString(mc.fontRendererObj, line, posX, posY, renderShadow(), true);
+                        GuiUtils.drawChromaString(fr, line, posX, posY, renderShadow(), true);
                     else
-                        GuiUtils.drawCenteredString(mc.fontRendererObj, line, posX, posY, getTextColor().getRGB(), renderShadow());
+                        GuiUtils.drawCenteredString(fr, line, posX, posY, getTextColor().getRGB(), renderShadow());
                     break;
                 case LEFT:
                     posX = x / getPosition().getScale();
 
                     if (useChroma())
-                        GuiUtils.drawChromaString(mc.fontRendererObj, line, posX, posY, renderShadow(), false);
+                        GuiUtils.drawChromaString(fr, line, posX, posY, renderShadow(), false);
                     else
-                        mc.fontRendererObj.drawString(line, posX, posY, getTextColor().getRGB(), renderShadow());
+                        fr.drawString(line, posX, posY, getTextColor().getRGB(), renderShadow());
                     break;
             }
 
             i++;
         }
 
-        GlStateManager.popMatrix();
-        mc.mcProfiler.endSection();
+        gl11.pop();
     }
 
     @Override
@@ -137,21 +139,20 @@ public class ElementCoordinates extends Element {
     @Override
     public HitBox2D getHitbox(float posScale, float sizeScale) {
         HitBox2D hitbox = null;
-        ScaledResolution res = new ScaledResolution(mc);
         List<String> value = getMultiValue();
 
         float width = 10;
         for (String line : value) {
-            width = Math.max(width, mc.fontRendererObj.getStringWidth(line));
+            width = Math.max(width, fr.stringWidth(line));
         }
         width = Math.max(10, width);
         width *= sizeScale;
 
         float extraWidth = getPaddingWidth() * sizeScale;
-        float height = ((mc.fontRendererObj.FONT_HEIGHT * value.size()) + (verticalSpacing.get() * (value.size() - 1))) * sizeScale;
+        float height = ((fr.fontHeight() * value.size()) + (verticalSpacing.get() * (value.size() - 1))) * sizeScale;
         float extraHeight = getPaddingHeight() * sizeScale;
-        float x = getPosition().getRawX(res) / posScale;
-        float y = getPosition().getRawY(res) / posScale;
+        float x = getPosition().getRawX(resolution) / posScale;
+        float y = getPosition().getRawY(resolution) / posScale;
         switch (getAlignment()) {
             case RIGHT:
                 hitbox = new HitBox2D(x - (width / sizeScale) - extraWidth, y - extraHeight, width + (extraWidth * 2), height + (extraHeight * 2));

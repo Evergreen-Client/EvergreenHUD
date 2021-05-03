@@ -17,7 +17,6 @@ package co.uk.isxander.evergreenhud.elements.impl;
 
 import co.uk.isxander.evergreenhud.elements.Element;
 import co.uk.isxander.evergreenhud.elements.ElementData;
-import net.minecraft.client.Minecraft;
 
 public class ElementFps extends Element {
 
@@ -33,7 +32,7 @@ public class ElementFps extends Element {
 
     @Override
     protected String getValue() {
-        return Integer.toString(Minecraft.getDebugFPS());
+        return Integer.toString(mc.getFps());
     }
 
     @Override

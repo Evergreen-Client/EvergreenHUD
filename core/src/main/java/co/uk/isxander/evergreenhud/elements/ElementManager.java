@@ -15,6 +15,7 @@
 
 package co.uk.isxander.evergreenhud.elements;
 
+import co.uk.isxander.evergreenhud.event.impl.RenderHud;
 import co.uk.isxander.evergreenhud.gui.screens.GuiScreenElements;
 import co.uk.isxander.evergreenhud.utils.Constants;
 import co.uk.isxander.evergreenhud.config.ElementConfig;
@@ -64,11 +65,9 @@ public class ElementManager implements Constants {
     }
 
     @Subscribe
-    public void onRenderOverlay(RenderGameOverlayEvent.Post event) {
-        if (event.type != RenderGameOverlayEvent.ElementType.ALL) return;
-
+    public void onRenderHud(RenderHud event) {
         if (isEnabled()) {
-            if ((mc.inGameHasFocus && !mc.gameSettings.showDebugInfo) || (mc.gameSettings.showDebugInfo && showInDebug) || (mc.currentScreen instanceof GuiChat && showInChat) || (!(mc.currentScreen instanceof GuiChat) && mc.currentScreen != null && showUnderGui && !(mc.currentScreen instanceof GuiScreenElements))) {
+            if ((mc.inGameHasFocus() && !mc.gameSettings.showDebugInfo) || (mc.gameSettings.showDebugInfo && showInDebug) || (mc.currentScreen instanceof GuiChat && showInChat) || (!(mc.currentScreen instanceof GuiChat) && mc.currentScreen != null && showUnderGui && !(mc.currentScreen instanceof GuiScreenElements))) {
                 for (Element e : currentElements) {
                     e.render(event);
                 }

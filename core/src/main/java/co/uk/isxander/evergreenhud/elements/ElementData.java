@@ -15,13 +15,25 @@
 
 package co.uk.isxander.evergreenhud.elements;
 
+import co.uk.isxander.evergreenhud.EvergreenHUD;
+import co.uk.isxander.evergreenhud.compatability.universal.MCVersion;
+
+import java.util.Arrays;
+import java.util.List;
+
 public class ElementData {
 
     private final String name, description;
+    private final List<MCVersion> blacklisted;
 
     public ElementData(String name, String description) {
+        this(name, description, new MCVersion[0]);
+    }
+
+    public ElementData(String name, String description, MCVersion[] blacklisted) {
         this.name = name;
         this.description = description;
+        this.blacklisted = Arrays.asList(blacklisted);
     }
 
     public String getName() {
@@ -30,5 +42,13 @@ public class ElementData {
 
     public String getDescription() {
         return description;
+    }
+
+    public boolean isBlacklisted() {
+        return blacklisted.contains(EvergreenHUD.getInstance().getMcVersion());
+    }
+
+    public List<MCVersion> getBlacklisted() {
+        return blacklisted;
     }
 }

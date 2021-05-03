@@ -15,10 +15,7 @@
 
 package co.uk.isxander.evergreenhud.config;
 
-import co.uk.isxander.evergreenhud.elements.Element;
-import co.uk.isxander.evergreenhud.elements.ElementManager;
-import co.uk.isxander.evergreenhud.elements.ElementType;
-import co.uk.isxander.xanderlib.utils.Constants;
+import co.uk.isxander.evergreenhud.elements.*;
 import co.uk.isxander.xanderlib.utils.json.BetterJsonObject;
 import co.uk.isxander.evergreenhud.EvergreenHUD;
 import com.google.gson.JsonArray;
@@ -27,7 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ElementConfig implements Constants {
+public class ElementConfig {
 
     public static final int VERSION = 2;
     public static final File OLD_CONFIG_FOLDER = new File(EvergreenHUD.DATA_DIR, "elements");

@@ -16,6 +16,7 @@
 package co.uk.isxander.evergreenhud.compatability.universal;
 
 import co.uk.isxander.evergreenhud.compatability.universal.impl.*;
+import co.uk.isxander.evergreenhud.compatability.universal.impl.command.UClientCommandManager;
 import co.uk.isxander.evergreenhud.compatability.universal.impl.gui.*;
 import co.uk.isxander.evergreenhud.compatability.universal.impl.render.UTessellator;
 
@@ -27,5 +28,7 @@ public class UniversalManager {
     public static UGuiScreen guiImplementation;
     public static UTessellator tessellator;
     public static UMouseUtils mouseUtils;
+    public static UClientCommandManager commandManager;
+    public static UNotificationManager notificationManager;
 
 }

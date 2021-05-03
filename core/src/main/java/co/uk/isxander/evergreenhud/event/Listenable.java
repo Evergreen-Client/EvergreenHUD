@@ -15,26 +15,21 @@
 
 package co.uk.isxander.evergreenhud.event;
 
-import co.uk.isxander.xanderlib.event.PacketEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+import co.uk.isxander.evergreenhud.event.impl.*;
 
 public interface Listenable {
 
     boolean canReceiveEvents();
 
-    default void onClientTick(TickEvent.ClientTickEvent event) {
+    default void onClientTick(ClientTickEvent event) {
 
     }
 
-    default void onRenderTick(TickEvent.RenderTickEvent event) {
+    default void onRenderTick(RenderEvent event) {
 
     }
 
-    default void onRenderGameOverlay(RenderGameOverlayEvent.Post event) {
+    default void onRenderHud(RenderHud event) {
 
     }
 
@@ -51,10 +46,6 @@ public interface Listenable {
     }
 
     default void onPacketReceive(PacketEvent.Incoming event) {
-
-    }
-
-    default void onPacketSend(PacketEvent.Outgoing event) {
 
     }
 

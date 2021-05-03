@@ -4,6 +4,9 @@
   "package": "co.uk.isxander.evergreenhud.compatability.fabric11605.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "AccessorMinecraft",
+    "AccessorWorldRenderer",
+    "MixinInGameHud",
     "MixinMinecraft"
   ],
   "client": [

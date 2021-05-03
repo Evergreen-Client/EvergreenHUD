@@ -15,29 +15,19 @@
 
 package co.uk.isxander.evergreenhud.elements.impl;
 
-import club.sk1er.mods.core.gui.notification.Notifications;
 import co.uk.isxander.evergreenhud.elements.Element;
+import co.uk.isxander.evergreenhud.event.impl.RenderHud;
 import co.uk.isxander.evergreenhud.gui.screens.impl.GuiElementConfig;
 import co.uk.isxander.evergreenhud.settings.impl.ArraySetting;
 import co.uk.isxander.evergreenhud.settings.impl.BooleanSetting;
 import co.uk.isxander.evergreenhud.settings.impl.ButtonSetting;
 import co.uk.isxander.evergreenhud.settings.impl.StringSetting;
-import co.uk.isxander.xanderlib.XanderLib;
 import co.uk.isxander.xanderlib.utils.HitBox2D;
 import co.uk.isxander.xanderlib.utils.ImageUtils;
 import co.uk.isxander.evergreenhud.EvergreenHUD;
 import co.uk.isxander.evergreenhud.elements.ElementData;
 import co.uk.isxander.evergreenhud.gui.elements.BetterGuiSlider;
 import net.apolloclient.utils.GLRenderer;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.texture.AbstractTexture;
-import net.minecraft.client.renderer.texture.TextureUtil;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.util.ReportedException;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -155,7 +145,7 @@ public class ElementImage extends Element {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setCurrentDirectory(EvergreenHUD.DATA_DIR);
                 fileChooser.setFileFilter(new FileNameExtensionFilter("Image File", "png", "jpg"));
-                Notifications.INSTANCE.pushNotification("EvergreenHUD", "The file dialogue has just been opened. You may need to tab out to see it.");
+                notifications.push("EvergreenHUD", "The file dialogue has just been opened. You may need to tab out to see it.");
                 int result = fileChooser.showOpenDialog(null);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     try {
@@ -166,9 +156,9 @@ public class ElementImage extends Element {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    Notifications.INSTANCE.pushNotification("EvergreenHUD", "You have selected a new image.");
+                    notifications.push("EvergreenHUD", "You have selected a new image.");
                 } else {
-                    Notifications.INSTANCE.pushNotification("EvergreenHUD", "You must select an image.");
+                    notifications.push("EvergreenHUD", "You must select an image.");
                 }
                 changed = true;
             }).start();
@@ -207,15 +197,14 @@ public class ElementImage extends Element {
     }
 
     @Override
-    public void render(RenderGameOverlayEvent event) {
-        mc.mcProfiler.startSection(getMetadata().getName());
+    public void render(RenderHud event) {
         if (changed) {
             // Reload the texture
             XanderLib.getInstance().getModifiedTextureManager().deleteTexture(getImageFile());
             changed = false;
         }
 
-        GlStateManager.pushMatrix();
+        gl11.push();
         float scale = getPosition().getScale();
 
         if (autoScale.get()) {
@@ -225,9 +214,9 @@ public class ElementImage extends Element {
         }
         HitBox2D hitbox = getHitbox(1, scale);
         GLRenderer.drawRectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height, getBgColor());
-        GlStateManager.scale(scale, scale, 1);
-        GlStateManager.enableDepth();
-        GlStateManager.color(1f, 1f, 1f, 1f);
+        gl11.scale(scale, scale, 1);
+        gl11.enableDepth();
+        gl11.color(1f, 1f, 1f, 1f);
         XanderLib.getInstance().getModifiedTextureManager().bindTexture(getImageFile(), (img) -> {
             if (this.mirror.get())
                 img = ImageUtils.mirror(img);
@@ -238,10 +227,9 @@ public class ElementImage extends Element {
         double renderWidth = width * scaleMod;
         double renderHeight = height * scaleMod;
 
-        GLRenderer.drawModalRect(this.getPosition().getRawX(event.resolution) / scale, this.getPosition().getRawY(event.resolution) / scale, 0, 0, imageDimension.getWidth(), imageDimension.getHeight(), renderWidth, renderHeight, imageDimension.getWidth(), imageDimension.getHeight());
+        GLRenderer.drawModalRect(this.getPosition().getRawX(resolution) / scale, this.getPosition().getRawY(resolution) / scale, 0, 0, imageDimension.getWidth(), imageDimension.getHeight(), renderWidth, renderHeight, imageDimension.getWidth(), imageDimension.getHeight());
 
-        GlStateManager.popMatrix();
-        mc.mcProfiler.endSection();
+        gl11.pop();
     }
 
     @Override

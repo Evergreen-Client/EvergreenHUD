@@ -27,5 +27,6 @@ public interface Constants {
     UMouseUtils mouseUtils = UniversalManager.mouseUtils;
     UTessellator tessellator = UniversalManager.tessellator;
     UResolution resolution = UniversalManager.resolution;
+    UNotificationManager notifications = UniversalManager.notificationManager;
 
 }

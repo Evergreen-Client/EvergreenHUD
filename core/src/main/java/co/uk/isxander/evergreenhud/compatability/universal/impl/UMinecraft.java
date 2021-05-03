@@ -15,6 +15,7 @@
 
 package co.uk.isxander.evergreenhud.compatability.universal.impl;
 
+import co.uk.isxander.evergreenhud.compatability.universal.impl.entity.UPlayer;
 import co.uk.isxander.evergreenhud.compatability.universal.impl.gui.UGuiScreenImp;
 
 import java.io.File;
@@ -30,5 +31,9 @@ public interface UMinecraft {
     boolean inGameHasFocus();
 
     void openGui(UGuiScreenImp gui);
+
+    int getFps();
+
+    int renderedEntityCount();
 
 }

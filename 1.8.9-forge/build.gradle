@@ -23,8 +23,19 @@ sourceSets {
     main.java.srcDirs += 'src/main/java'
 }
 
+repositories {
+    mavenCentral()
+    maven { url = "https://jitpack.io/" }
+}
+
 dependencies {
     api(project(":core"))
+
+    provided files("libs/modcore.jar")
+
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.2.4'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.0-beta9'
+    implementation 'com.github.KevinPriv:KEventBus:86cf2e023e'
 }
 
 minecraft {

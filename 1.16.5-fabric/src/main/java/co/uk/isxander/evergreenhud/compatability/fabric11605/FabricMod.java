@@ -16,22 +16,22 @@
 package co.uk.isxander.evergreenhud.compatability.fabric11605;
 
 import co.uk.isxander.evergreenhud.EvergreenHUD;
-import co.uk.isxander.evergreenhud.compatability.fabric11605.callback.*;
+import co.uk.isxander.evergreenhud.compatability.fabric11605.mixin.AccessorMinecraft;
+import co.uk.isxander.evergreenhud.compatability.fabric11605.mixin.AccessorWorldRenderer;
 import co.uk.isxander.evergreenhud.compatability.universal.*;
 import co.uk.isxander.evergreenhud.compatability.universal.impl.*;
+import co.uk.isxander.evergreenhud.compatability.universal.impl.entity.UEntity;
+import co.uk.isxander.evergreenhud.compatability.universal.impl.entity.UPlayer;
 import co.uk.isxander.evergreenhud.compatability.universal.impl.gui.*;
 import co.uk.isxander.evergreenhud.compatability.universal.impl.render.*;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.toast.*;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
-import net.minecraft.util.ActionResult;
 import org.lwjgl.opengl.GL11;
 
 import java.io.File;
@@ -41,6 +41,13 @@ public class FabricMod implements ClientModInitializer {
     private final MinecraftClient mc = MinecraftClient.getInstance();
     @Override
     public void onInitializeClient() {
+        UniversalManager.commandManager = command ->
+                ClientCommandManager.DISPATCHER.register(ClientCommandManager.literal(command.name()).executes(context -> {
+            // TODO: 03/05/2021 get list of arguments
+            command.execute(new String[]{});
+
+            return 0;
+        }));
 
         UniversalManager.tessellator = new UTessellator() {
             private final Tessellator tes = Tessellator.getInstance();
@@ -320,6 +327,21 @@ public class FabricMod implements ClientModInitializer {
                     }
 
                     @Override
+                    public double getPrevX() {
+                        return mc.player.prevX;
+                    }
+
+                    @Override
+                    public double getPrevY() {
+                        return mc.player.prevY;
+                    }
+
+                    @Override
+                    public double getPrevZ() {
+                        return mc.player.prevZ;
+                    }
+
+                    @Override
                     public float getYaw() {
                         return mc.player.yaw;
                     }
@@ -338,6 +360,17 @@ public class FabricMod implements ClientModInitializer {
                     public void setPitch(float pitch) {
                         mc.player.pitch = pitch;
                     }
+
+                    @Override
+                    public double calculateReachDistFromEntity(UEntity entity) {
+                        // TODO: 03/05/2021 find modern code for calculating reach dist
+                        return -1;
+                    }
+
+                    @Override
+                    public int id() {
+                        return mc.player.getEntityId();
+                    }
                 };
             }
 
@@ -348,9 +381,9 @@ public class FabricMod implements ClientModInitializer {
                     public void drawString(String text, float x, float y, int color, boolean shadow) {
                         // FIXME: 03/05/2021 get instance of matrix stack
                         if (shadow)
-                            mc.textRenderer.drawWithShadow(new MatrixStack(), text, x, y, color);
+                            mc.textRenderer.drawWithShadow(null, text, x, y, color);
                         else
-                            mc.textRenderer.draw(new MatrixStack(), text, x, y, color);
+                            mc.textRenderer.draw(null, text, x, y, color);
                     }
 
                     @Override
@@ -373,23 +406,21 @@ public class FabricMod implements ClientModInitializer {
 
             @Override
             public void openGui(UGuiScreenImp gui) {
+                // TODO: 03/05/2021 guis...
+            }
 
+            @Override
+            public int getFps() {
+                return ((AccessorMinecraft) mc).getCurrentFps();
+            }
+
+            @Override
+            public int renderedEntityCount() {
+                return ((AccessorWorldRenderer) mc.worldRenderer).getEntityCount();
             }
         };
 
         EvergreenHUD.instance = new EvergreenHUD(MCVersion.FABRIC_1_16_5);
-
-        ModInitCallback.EVENT.register(() -> {
-            EvergreenHUD.instance.init();
-
-            return ActionResult.PASS;
-        });
-
-        ModPostInitCallback.EVENT.register(() -> {
-            EvergreenHUD.instance.postInit();
-            mc.getToastManager().add(new SystemToast(SystemToast.Type.TUTORIAL_HINT, new LiteralText("EvergreenHUD"), new LiteralText("This is a test!")));
-            return ActionResult.PASS;
-        });
     }
 
 }

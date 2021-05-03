@@ -18,6 +18,8 @@ package co.uk.isxander.evergreenhud;
 import co.uk.isxander.evergreenhud.compatability.universal.MCVersion;
 import co.uk.isxander.evergreenhud.elements.ElementManager;
 import co.uk.isxander.evergreenhud.elements.impl.ElementText;
+import co.uk.isxander.evergreenhud.event.impl.ModInit;
+import co.uk.isxander.evergreenhud.event.impl.ModPostInit;
 import co.uk.isxander.evergreenhud.github.BlacklistManager;
 import co.uk.isxander.evergreenhud.command.EvergreenHudCommand;
 import co.uk.isxander.evergreenhud.config.ElementConfig;
@@ -26,6 +28,7 @@ import co.uk.isxander.evergreenhud.github.UpdateChecker;
 import co.uk.isxander.evergreenhud.utils.Constants;
 import co.uk.isxander.xanderlib.utils.Version;
 import me.kbrewster.eventbus.EventBus;
+import me.kbrewster.eventbus.Subscribe;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -61,9 +64,11 @@ public class EvergreenHUD implements Constants {
 
     public EvergreenHUD(MCVersion version) {
         this.mcVersion = version;
+        EVENT_BUS.register(this);
     }
 
-    public void init() {
+    @Subscribe
+    public void init(ModInit event) {
         disabled = BlacklistManager.isVersionBlacklisted(MOD_VERSION);
         if (disabled)
             return;
@@ -100,8 +105,8 @@ public class EvergreenHUD implements Constants {
         }
     }
 
-
-    public void postInit() {
+    @Subscribe
+    public void postInit(ModPostInit event) {
         if (disabled) {
             Notifications.INSTANCE.pushNotification("EvergreenHUD",
                     "The current version of this mod has been blacklisted.\n"
@@ -196,6 +201,10 @@ public class EvergreenHUD implements Constants {
 
     public boolean isFirstLaunch() {
         return this.firstLaunch;
+    }
+
+    public MCVersion getMcVersion() {
+        return this.mcVersion;
     }
 
     public boolean isVersionTwoFirstLaunch() {

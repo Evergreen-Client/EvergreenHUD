@@ -16,12 +16,11 @@
 package co.uk.isxander.evergreenhud.elements.impl;
 
 import co.uk.isxander.evergreenhud.elements.Element;
+import co.uk.isxander.evergreenhud.event.impl.RenderHud;
 import co.uk.isxander.evergreenhud.settings.impl.EnumSetting;
 import co.uk.isxander.evergreenhud.settings.impl.IntegerSetting;
 import co.uk.isxander.evergreenhud.settings.impl.BooleanSetting;
 import co.uk.isxander.evergreenhud.elements.ElementData;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 import java.text.DecimalFormat;
 
@@ -66,14 +65,12 @@ public class ElementSpeed extends Element {
         return "Speed";
     }
 
-    public void onRenderGameOverlay(RenderGameOverlayEvent.Post event) {
-        if (event.type != RenderGameOverlayEvent.ElementType.ALL) return;
+    public void onRenderHud(RenderHud event) {
+        double distTraveledLastTickX = (useX.get() ? mc.player().getX() - mc.player().getPrevX() : 0);
+        double distTraveledLastTickY = (useY.get() ? mc.player().getY() - mc.player().getPrevY() : 0);
+        double distTraveledLastTickZ = (useZ.get() ? mc.player().getZ() - mc.player().getPrevZ() : 0);
 
-        double distTraveledLastTickX = (useX.get() ? mc.thePlayer.posX - mc.thePlayer.prevPosX : 0);
-        double distTraveledLastTickY = (useY.get() ? mc.thePlayer.posY - mc.thePlayer.prevPosY : 0);
-        double distTraveledLastTickZ = (useZ.get() ? mc.thePlayer.posZ - mc.thePlayer.prevPosZ : 0);
-
-        this.speed = convertSpeed(MathHelper.sqrt_double(distTraveledLastTickX * distTraveledLastTickX + distTraveledLastTickY * distTraveledLastTickY + distTraveledLastTickZ * distTraveledLastTickZ) * 20);
+        this.speed = convertSpeed(Math.sqrt(distTraveledLastTickX * distTraveledLastTickX + distTraveledLastTickY * distTraveledLastTickY + distTraveledLastTickZ * distTraveledLastTickZ) * 20);
     }
 
     private double convertSpeed(double speed) {

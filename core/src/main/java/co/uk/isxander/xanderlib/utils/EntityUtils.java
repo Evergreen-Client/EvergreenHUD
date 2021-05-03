@@ -7,7 +7,7 @@
  *
  * If you have any questions or concerns, please create
  * an issue on the github page that can be found here
- * https://github.com/isXander/XanderLib
+ * https://github.com/isXander/EvergreenHUD
  *
  * If you have a private concern, please contact
  * isXander @ business.isxander@gmail.com
@@ -15,6 +15,7 @@
 
 package co.uk.isxander.xanderlib.utils;
 
+import co.uk.isxander.evergreenhud.compatability.universal.impl.entity.UEntity;
 import co.uk.isxander.evergreenhud.utils.Constants;
 
 public final class EntityUtils implements Constants {
@@ -30,7 +31,7 @@ public final class EntityUtils implements Constants {
      * @return distance between player and entity
      * @author isXander
      */
-    public static double getReachDistanceFromEntity(Entity entity) {
+    public static double getReachDistanceFromEntity(UEntity entity) {
         // How far will ray travel before ending
         double maxSize = 6D;
         // Bounding box of entity

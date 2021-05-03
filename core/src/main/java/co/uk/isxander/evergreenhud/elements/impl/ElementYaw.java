@@ -18,7 +18,7 @@ package co.uk.isxander.evergreenhud.elements.impl;
 import co.uk.isxander.evergreenhud.elements.Element;
 import co.uk.isxander.evergreenhud.settings.impl.BooleanSetting;
 import co.uk.isxander.evergreenhud.elements.ElementData;
-import net.minecraft.util.MathHelper;
+import co.uk.isxander.xanderlib.utils.MathUtils;
 
 import java.text.DecimalFormat;
 
@@ -38,7 +38,7 @@ public class ElementYaw extends Element {
 
     @Override
     protected String getValue() {
-        return new DecimalFormat(trailingZeros.get() ? "0.0" : "#.#").format(MathHelper.wrapAngleTo180_float(mc.player().getYaw()));
+        return new DecimalFormat(trailingZeros.get() ? "0.0" : "#.#").format(MathUtils.wrapAngle180(mc.player().getYaw()));
     }
 
     @Override

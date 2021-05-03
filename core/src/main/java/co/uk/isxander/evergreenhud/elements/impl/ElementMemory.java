@@ -16,11 +16,11 @@
 package co.uk.isxander.evergreenhud.elements.impl;
 
 import co.uk.isxander.evergreenhud.elements.Element;
+import co.uk.isxander.evergreenhud.event.impl.ClientTickEvent;
 import co.uk.isxander.evergreenhud.settings.impl.ArraySetting;
 import co.uk.isxander.evergreenhud.settings.impl.BooleanSetting;
 import co.uk.isxander.xanderlib.utils.MathUtils;
 import co.uk.isxander.evergreenhud.elements.ElementData;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.text.DecimalFormat;
 
@@ -50,7 +50,7 @@ public class ElementMemory extends Element {
 
     // Update memory every second to minimize lag
     @Override
-    public void onClientTick(TickEvent.ClientTickEvent event) {
+    public void onClientTick(ClientTickEvent event) {
         if (lastUpdated < System.currentTimeMillis() - 1000L) {
             if (displayMode.get().equalsIgnoreCase("absolute")) {
                 DecimalFormat df = new DecimalFormat((trailingZeros.get() ? "0.0" : "#.#"));

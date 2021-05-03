@@ -16,16 +16,8 @@
 package co.uk.isxander.evergreenhud.event;
 
 import co.uk.isxander.evergreenhud.EvergreenHUD;
-import co.uk.isxander.xanderlib.event.PacketEvent;
-import co.uk.isxander.xanderlib.utils.Constants;
+import co.uk.isxander.evergreenhud.event.impl.*;
 import me.kbrewster.eventbus.Subscribe;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,18 +47,18 @@ public class EventManager {
     }
 
     @Subscribe
-    public void onClientTick(TickEvent.ClientTickEvent event) {
+    public void onClientTick(ClientTickEvent event) {
         listenables.stream().filter(Listenable::canReceiveEvents).forEach((listenable -> listenable.onClientTick(event)));
     }
 
     @Subscribe
-    public void onRenderTick(TickEvent.RenderTickEvent event) {
+    public void onRenderTick(RenderEvent event) {
         listenables.stream().filter(Listenable::canReceiveEvents).forEach((listenable -> listenable.onRenderTick(event)));
     }
 
     @Subscribe
-    public void onRenderGameOverlay(RenderGameOverlayEvent.Post event) {
-        listenables.stream().filter(Listenable::canReceiveEvents).forEach((listenable -> listenable.onRenderGameOverlay(event)));
+    public void onRenderGameOverlay(RenderHud event) {
+        listenables.stream().filter(Listenable::canReceiveEvents).forEach((listenable -> listenable.onRenderHud(event)));
     }
 
     @Subscribe

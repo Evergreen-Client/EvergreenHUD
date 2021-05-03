@@ -39,7 +39,6 @@ public enum ElementType {
     PITCH(ElementPitch.class),
     PLAYER_PREVIEW(ElementPlayerPreview.class),
     REACH(ElementReach.class),
-    //SCOREBOARD(new ElementScoreboard()),
     SERVER(ElementServer.class),
     SPEED(ElementSpeed.class),
     TEXT(ElementText.class),

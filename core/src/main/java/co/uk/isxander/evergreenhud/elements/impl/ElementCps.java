@@ -16,6 +16,7 @@
 package co.uk.isxander.evergreenhud.elements.impl;
 
 import co.uk.isxander.evergreenhud.elements.Element;
+import co.uk.isxander.evergreenhud.event.impl.RenderEvent;
 import co.uk.isxander.evergreenhud.settings.impl.ArraySetting;
 import co.uk.isxander.evergreenhud.elements.ElementData;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -66,9 +67,7 @@ public class ElementCps extends Element {
     }
 
     @Override
-    public void onRenderTick(TickEvent.RenderTickEvent event) {
-        if (event.phase == TickEvent.Phase.START) return;
-
+    public void onRenderTick(RenderEvent event) {
         boolean pressed = Mouse.isButtonDown(0);
         if (pressed != leftPressed) {
             leftPressed = pressed;

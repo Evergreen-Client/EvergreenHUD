@@ -36,7 +36,7 @@ public class ElementDirection extends Element {
 
     @Override
     protected String getValue() {
-        Facing facing = Facing.parse(mc.thePlayer.rotationYaw);
+        Facing facing = Facing.parse(mc.player().getYaw());
 
         if (abbreviated.get())
             return facing.getAbbreviated();

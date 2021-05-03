@@ -16,6 +16,7 @@
 package co.uk.isxander.evergreenhud.elements;
 
 import co.uk.isxander.evergreenhud.event.Listenable;
+import co.uk.isxander.evergreenhud.event.impl.RenderHud;
 import co.uk.isxander.evergreenhud.gui.screens.impl.GuiElementConfig;
 import co.uk.isxander.evergreenhud.settings.impl.*;
 import co.uk.isxander.evergreenhud.utils.Alignment;
@@ -26,11 +27,6 @@ import co.uk.isxander.evergreenhud.EvergreenHUD;
 import co.uk.isxander.evergreenhud.gui.screens.impl.GuiMain;
 import co.uk.isxander.evergreenhud.settings.Setting;
 import net.apolloclient.utils.GLRenderer;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class Element extends Gui implements Listenable, Constants {
+public abstract class Element implements Listenable, Constants {
 
     @Override
     public boolean canReceiveEvents() {
@@ -111,56 +107,53 @@ public abstract class Element extends Gui implements Listenable, Constants {
     /**
      * This can be overwritten if element has a very specific way of displaying itself
      */
-    public void render(RenderGameOverlayEvent event) {
-        mc.mcProfiler.startSection(getMetadata().getName());
+    public void render(RenderHud event) {
         HitBox2D hitbox = getHitbox(1, getPosition().getScale());
-        float x = getPosition().getRawX(event.resolution);
-        float y = getPosition().getRawY(event.resolution);
+        float x = getPosition().getRawX(resolution);
+        float y = getPosition().getRawY(resolution);
         GLRenderer.drawRectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height, getBgColor());
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(getPosition().getScale(), getPosition().getScale(), 0);
+        gl11.push();
+        gl11.scale(getPosition().getScale(), getPosition().getScale(), 0);
         switch (getAlignment()) {
             case RIGHT:
-                float posX = (x - mc.fontRendererObj.getStringWidth(getDisplayString())) / getPosition().getScale();
+                float posX = (x - fr.stringWidth(getDisplayString())) / getPosition().getScale();
                 float posY = y / getPosition().getScale();
 
                 if (chroma)
-                    GuiUtils.drawChromaString(mc.fontRendererObj, getDisplayString(), posX, posY, renderShadow(), false);
+                    GuiUtils.drawChromaString(fr, getDisplayString(), posX, posY, renderShadow(), false);
                 else
-                    mc.fontRendererObj.drawString(getDisplayString(), posX, posY, getTextColor().getRGB(), renderShadow());
+                    fr.drawString(getDisplayString(), posX, posY, getTextColor().getRGB(), renderShadow());
                 break;
             case CENTER:
                 posX = x / getPosition().getScale();
                 posY = y / getPosition().getScale();
 
                 if (chroma)
-                    GuiUtils.drawChromaString(mc.fontRendererObj, getDisplayString(), posX, posY, renderShadow(), true);
+                    GuiUtils.drawChromaString(fr, getDisplayString(), posX, posY, renderShadow(), true);
                 else
-                    GuiUtils.drawCenteredString(mc.fontRendererObj, getDisplayString(), posX, posY, getTextColor().getRGB(), renderShadow());
+                    GuiUtils.drawCenteredString(fr, getDisplayString(), posX, posY, getTextColor().getRGB(), renderShadow());
                 break;
             case LEFT:
                 posX = x / getPosition().getScale();
                 posY = y / getPosition().getScale();
 
                 if (chroma)
-                    GuiUtils.drawChromaString(mc.fontRendererObj, getDisplayString(), posX, posY, renderShadow(), false);
+                    GuiUtils.drawChromaString(fr, getDisplayString(), posX, posY, renderShadow(), false);
                 else
-                    mc.fontRendererObj.drawString(getDisplayString(), posX, posY, getTextColor().getRGB(), renderShadow());
+                    fr.drawString(getDisplayString(), posX, posY, getTextColor().getRGB(), renderShadow());
                 break;
         }
-        GlStateManager.popMatrix();
-        mc.mcProfiler.endSection();
+        gl11.pop();
     }
 
     public HitBox2D getHitbox(float posScale, float sizeScale) {
         HitBox2D hitbox = null;
-        ScaledResolution res = new ScaledResolution(mc);
-        float width = Math.max(mc.fontRendererObj.getStringWidth(getDisplayString()), 10) * sizeScale;
+        float width = Math.max(fr.stringWidth(getDisplayString()), 10) * sizeScale;
         float extraWidth = getPaddingWidth() * sizeScale;
-        float height = mc.fontRendererObj.FONT_HEIGHT * sizeScale;
+        float height = fr.fontHeight() * sizeScale;
         float extraHeight = getPaddingHeight() * sizeScale;
-        float x = getPosition().getRawX(res) / posScale;
-        float y = getPosition().getRawY(res) / posScale;
+        float x = getPosition().getRawX(resolution) / posScale;
+        float y = getPosition().getRawY(resolution) / posScale;
         switch (getAlignment()) {
             case RIGHT:
                 hitbox = new HitBox2D(x - (width / sizeScale) - extraWidth, y - extraHeight, width + (extraWidth * 2), height + (extraHeight * 2));
@@ -176,7 +169,7 @@ public abstract class Element extends Gui implements Listenable, Constants {
     }
 
     public void resetSettings(boolean save) {
-        pos = Position.getPositionWithRawPositioning(10, 10, 1, new ScaledResolution(mc));
+        pos = Position.getPositionWithRawPositioning(10, 10, 1, resolution);
         title = true;
         brackets = false;
         inverted = false;
@@ -200,17 +193,17 @@ public abstract class Element extends Gui implements Listenable, Constants {
         // doesnt play well with background on so find a way to make it look accurate
         //GLRenderer.drawRectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height, new Color(255, 255, 255, 50));
         GLRenderer.drawHollowRectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height, 1, (selected ? new Color(255, 255, 255, 175) : new Color(175, 175, 175, 100)));
-        GlStateManager.pushMatrix();
-        GlStateManager.color(1f, 1f, 1f);
-        GlStateManager.enableAlpha();
-        GlStateManager.enableBlend();
+        gl11.push();
+        gl11.color(1f, 1f, 1f, 1f);
+        gl11.enableAlpha();
+        gl11.enableBlend();
         double iconWidth = 384 * 0.02f * MathUtils.clamp(getPosition().getScale(), 0.75f, 1f);
         double iconHeight = 384 * 0.02f * MathUtils.clamp(getPosition().getScale(), 0.75f, 1f);
         mc.getTextureManager().bindTexture(settingsIcon);
         GLRenderer.drawModalRect(hitbox.x, hitbox.y + hitbox.height - iconHeight, 0, 0, 384, 384, iconWidth, iconHeight, 384, 384);
         mc.getTextureManager().bindTexture(deleteIcon);
         GLRenderer.drawModalRect(hitbox.x + hitbox.width - iconWidth, hitbox.y + hitbox.height - iconHeight, 0, 0, 384, 384, iconWidth, iconHeight, 384, 384);
-        GlStateManager.popMatrix();
+        gl11.pop();
     }
 
     public void onMouseClicked(float mouseX, float mouseY) {
@@ -218,7 +211,7 @@ public abstract class Element extends Gui implements Listenable, Constants {
         double iconWidth = 384 * 0.02f * MathUtils.clamp01(getPosition().getScale());
         double iconHeight = 384 * 0.02f * MathUtils.clamp01(getPosition().getScale());
         if (mouseX >= hitbox.x && mouseX <= hitbox.x + iconWidth && mouseY >= hitbox.y + hitbox.height - iconHeight && mouseY <= hitbox.y + hitbox.height) {
-            mc.displayGuiScreen(this.getElementConfigGui());
+            mc.openGui(this.getElementConfigGui());
         }
         if (mouseX >= hitbox.x + hitbox.width - iconWidth && mouseX <= hitbox.x + hitbox.width && mouseY >= hitbox.y + hitbox.height - iconHeight && mouseY <= hitbox.y + hitbox.height) {
             EvergreenHUD.getInstance().getElementManager().removeElement(this);
@@ -356,7 +349,7 @@ public abstract class Element extends Gui implements Listenable, Constants {
         if (mc.currentScreen instanceof GuiElementConfig) {
             GuiElementConfig configScreen = (GuiElementConfig) mc.currentScreen;
             if (configScreen.element.equals(this)) {
-                mc.displayGuiScreen(new GuiMain());
+                mc.openGui(new GuiMain());
             }
         }
     }

@@ -7,7 +7,7 @@
  *
  * If you have any questions or concerns, please create
  * an issue on the github page that can be found here
- * https://github.com/isXander/XanderLib
+ * https://github.com/isXander/EvergreenHUD
  *
  * If you have a private concern, please contact
  * isXander @ business.isxander@gmail.com
