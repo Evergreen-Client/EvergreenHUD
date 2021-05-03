@@ -32,11 +32,11 @@ This is how you can get a working development environment.
 
 Decompile Minecraft
 
-    gradlew setupDecompWorkspace
+    gradlew setupDecompWorkspace genSources
 
 If you use [Intellij](https://www.jetbrains.com/idea/), then run this command
 
-    gradlew idea genIntellijRuns
+    gradlew genIntellijRuns
 
 If you use [Eclipse](https://www.eclipse.org/) (not recommended), use this
 
