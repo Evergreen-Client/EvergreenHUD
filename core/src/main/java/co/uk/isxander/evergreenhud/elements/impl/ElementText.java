@@ -18,7 +18,6 @@ package co.uk.isxander.evergreenhud.elements.impl;
 import co.uk.isxander.evergreenhud.elements.Element;
 import co.uk.isxander.evergreenhud.settings.impl.StringSetting;
 import co.uk.isxander.evergreenhud.elements.ElementData;
-import net.minecraft.util.EnumChatFormatting;
 
 public class ElementText extends Element {
 

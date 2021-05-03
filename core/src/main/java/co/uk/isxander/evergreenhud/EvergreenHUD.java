@@ -16,6 +16,9 @@
 package co.uk.isxander.evergreenhud;
 
 import co.uk.isxander.evergreenhud.compatability.universal.MCVersion;
+import co.uk.isxander.evergreenhud.compatability.universal.UniversalManager;
+import co.uk.isxander.evergreenhud.compatability.universal.impl.keybind.CustomKeybind;
+import co.uk.isxander.evergreenhud.compatability.universal.impl.keybind.Keyboard;
 import co.uk.isxander.evergreenhud.elements.ElementManager;
 import co.uk.isxander.evergreenhud.elements.impl.ElementText;
 import co.uk.isxander.evergreenhud.event.impl.ModInit;
@@ -60,8 +63,6 @@ public class EvergreenHUD implements Constants {
 
     private boolean reset = false;
 
-    private KeyBinding keybind = new KeyBinding("Open GUI", Keyboard.KEY_HOME, "EvergreenHUD");
-
     public EvergreenHUD(MCVersion version) {
         this.mcVersion = version;
         EVENT_BUS.register(this);
@@ -76,10 +77,11 @@ public class EvergreenHUD implements Constants {
         firstLaunch = !DATA_DIR.exists();
         versionTwoFirstLaunch = !ElementConfig.CONFIG_FILE.exists();
 
-        ClientCommandHandler.instance.registerCommand(new EvergreenHudCommand());
-        ClientRegistry.registerKeyBinding(keybind);
+        UniversalManager.commandManager.register(new EvergreenHudCommand());
+        UniversalManager.keybindManager.registerKeybind(new CustomKeybind(Keyboard.KEY_HOME, "EvergreenHUD", "Open GUI", () -> {
+            mc.openGui(new GuiMain());
+        }));
         EVENT_BUS.register(elementManager = new ElementManager());
-        EVENT_BUS.register(this);
 
 
         XanderLib.getInstance().getGuiEditor().addModifier(GuiOptions.class, new AbstractGuiModifier() {
@@ -159,12 +161,6 @@ public class EvergreenHUD implements Constants {
                 return null;
             });
         }
-    }
-
-    @SubscribeEvent
-    public void onTick(TickEvent.ClientTickEvent event) {
-        if (keybind.isPressed())
-            mc.displayGuiScreen(new GuiMain());
     }
 
     public static void notifyUpdate(Version latestVersion) {

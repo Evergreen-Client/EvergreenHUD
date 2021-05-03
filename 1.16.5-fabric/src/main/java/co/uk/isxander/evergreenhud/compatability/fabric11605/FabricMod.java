@@ -16,6 +16,7 @@
 package co.uk.isxander.evergreenhud.compatability.fabric11605;
 
 import co.uk.isxander.evergreenhud.EvergreenHUD;
+import co.uk.isxander.evergreenhud.compatability.fabric11605.keybind.KeybindManager;
 import co.uk.isxander.evergreenhud.compatability.fabric11605.mixin.AccessorMinecraft;
 import co.uk.isxander.evergreenhud.compatability.fabric11605.mixin.AccessorWorldRenderer;
 import co.uk.isxander.evergreenhud.compatability.universal.*;
@@ -24,9 +25,11 @@ import co.uk.isxander.evergreenhud.compatability.universal.impl.entity.UEntity;
 import co.uk.isxander.evergreenhud.compatability.universal.impl.entity.UPlayer;
 import co.uk.isxander.evergreenhud.compatability.universal.impl.gui.*;
 import co.uk.isxander.evergreenhud.compatability.universal.impl.render.*;
+import co.uk.isxander.evergreenhud.event.impl.ClientTickEvent;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
@@ -41,6 +44,9 @@ public class FabricMod implements ClientModInitializer {
     private final MinecraftClient mc = MinecraftClient.getInstance();
     @Override
     public void onInitializeClient() {
+        ClientTickEvents.END_CLIENT_TICK.register(client -> EvergreenHUD.EVENT_BUS.post(new ClientTickEvent()));
+
+        new KeybindManager();
         UniversalManager.commandManager = command ->
                 ClientCommandManager.DISPATCHER.register(ClientCommandManager.literal(command.name()).executes(context -> {
             // TODO: 03/05/2021 get list of arguments

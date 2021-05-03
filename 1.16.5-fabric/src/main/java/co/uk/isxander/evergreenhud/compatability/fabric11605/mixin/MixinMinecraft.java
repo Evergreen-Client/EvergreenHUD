@@ -43,9 +43,4 @@ public class MixinMinecraft {
         EvergreenHUD.EVENT_BUS.post(new RenderEvent(((MinecraftClient)(Object) this).getTickDelta()));
     }
 
-    @Inject(method = "tick", at = @At("TAIL"))
-    public void tickPost(CallbackInfo ci) {
-        EvergreenHUD.EVENT_BUS.post(new ClientTickEvent());
-    }
-
 }
