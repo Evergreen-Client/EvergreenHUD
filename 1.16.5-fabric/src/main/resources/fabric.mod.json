@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "evergreenhud",
+  "version": "${version}",
+
+  "name": "EvergreenHUD",
+  "description": "EvergreenHUD is a forge mod to improve and add upon your heads up display. I, Xander, have been working on this mod for over 3 months and believe it really is the best HUD mod out there.",
+  "authors": [
+    "isXander"
+  ],
+  "contact": {
+    "homepage": "https",
+    "sources": "https://github.com/isXander/EvergreenHUD"
+  },
+
+  "license": "GPL-3.0",
+  "icon": "assets/minecraft/evergreenhud/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+    ],
+    "client": [
+      "co.uk.isxander.evergrenhud.compatability.fabric11605.FabricMod"
+    ]
+  },
+  "mixins": [
+    "evergreenhud.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x"
+  },
+  "suggests": {
+  }
+}

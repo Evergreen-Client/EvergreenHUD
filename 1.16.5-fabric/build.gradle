@@ -1,0 +1,70 @@
+plugins {
+    id 'fabric-loom' version '0.6-SNAPSHOT'
+    id 'maven-publish'
+    id 'java-library'
+    id 'java'
+}
+
+archivesBaseName = project.baseName
+targetCompatibility = sourceCompatibility = JavaVersion.VERSION_1_8
+
+sourceSets {
+    main.java.srcDirs += 'src/main/java'
+}
+
+// https://fabricmc.net/versions.html
+dependencies {
+    minecraft "com.mojang:minecraft:1.16.5"
+    mappings "net.fabricmc:yarn:1.16.5+build.8:v2"
+    modImplementation "net.fabricmc:fabric-loader:0.11.3"
+
+    //Fabric api
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.34.0+1.16"
+
+    api(project(":core"))
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+
+    def targetVersion = 8
+    if (JavaVersion.current().isJava9Compatible()) {
+        it.options.release = targetVersion
+    }
+}
+
+java {
+    withSourcesJar()
+}
+
+jar {
+    from("LICENSE") {
+        rename { "${it}_${project.archivesBaseName}"}
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact(remapJar) {
+                builtBy remapJar
+            }
+            artifact(sourcesJar) {
+                builtBy remapSourcesJar
+            }
+        }
+    }
+
+
+    repositories {
+
+    }
+}
