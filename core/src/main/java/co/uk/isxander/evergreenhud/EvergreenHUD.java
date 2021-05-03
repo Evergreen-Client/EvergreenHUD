@@ -110,7 +110,7 @@ public class EvergreenHUD implements Constants {
     @Subscribe
     public void postInit(ModPostInit event) {
         if (disabled) {
-            Notifications.INSTANCE.pushNotification("EvergreenHUD",
+            notifications.push("EvergreenHUD",
                     "The current version of this mod has been blacklisted.\n"
                     + "Please check the discord server for updates.\n"
                     + "Click to join the discord.",
@@ -143,40 +143,16 @@ public class EvergreenHUD implements Constants {
 
         if (reset) {
             reset = false;
-            Notifications.INSTANCE.pushNotification("EvergreenHUD", "The configuration has been reset due to a version change that makes your configuration incompatible with the current version.");
+            notifications.push("EvergreenHUD", "The configuration has been reset due to a version change that makes your configuration incompatible with the current version.");
         }
 
         if (isFirstLaunch()) {
-            Notifications.INSTANCE.pushNotification("EvergreenHUD", "Welcome to EvergreenHUD!\n\nIf you wish to support Xander, the creator, click this message to join the discord server!", () -> {
-                if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                    try {
-                        Desktop.getDesktop().browse(new URI("https://discord.gg/AJv5ZnNT8q"));
-                    }
-                    catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    Notifications.INSTANCE.pushNotification("EvergreenHUD", "Unfortunately, your computer does not seem to support web-browsing.");
-                }
-                return null;
-            });
+            notifications.push("EvergreenHUD", "Welcome to EvergreenHUD!\n\nIf you wish to support Xander, the creator, join the discord server!");
         }
     }
 
     public static void notifyUpdate(Version latestVersion) {
-        Notifications.INSTANCE.pushNotification("EvergreenHUD", "You are running an outdated version.\nCurrent: " + EvergreenHUD.PARSED_VERSION + "\nLatest: " + latestVersion.toString() + "\n\nClick here to download.", () -> {
-            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                try {
-                    Desktop.getDesktop().browse(new URI("https://short.evergreenclient.com/GlYH5z"));
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Notifications.INSTANCE.pushNotification("EvergreenHUD", "Unfortunately, your computer does not seem to support web-browsing so the mod could not open the download page.\n\nPlease navigate to \"https://short.evergreenclient.com/GlYH5z\"" );
-            }
-            return null;
-        });
+        notifications.push("EvergreenHUD", "You are running an outdated version.\nCurrent: " + EvergreenHUD.PARSED_VERSION + "\nLatest: " + latestVersion.toString());
     }
 
     public static EvergreenHUD getInstance() {
