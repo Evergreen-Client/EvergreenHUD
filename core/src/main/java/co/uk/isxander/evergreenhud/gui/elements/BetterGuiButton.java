@@ -15,10 +15,6 @@
 
 package co.uk.isxander.evergreenhud.gui.elements;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraftforge.fml.client.config.GuiUtils;
-
 import java.util.Collections;
 
 public class BetterGuiButton extends GuiButtonAlt {

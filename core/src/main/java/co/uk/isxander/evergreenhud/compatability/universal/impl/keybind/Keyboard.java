@@ -137,6 +137,22 @@ public enum Keyboard {
         this.lwjgl2 = lwjgl2;
     }
 
+    public static Keyboard getGlfw(int code) {
+        for (Keyboard key : Keyboard.values()) {
+            if (key.glfw == code)
+                return key;
+        }
+        return Keyboard.KEY_NONE;
+    }
+
+    public static Keyboard getLwjgl(int code) {
+        for (Keyboard key : Keyboard.values()) {
+            if (key.lwjgl2 == code)
+                return key;
+        }
+        return Keyboard.KEY_NONE;
+    }
+
     public int get() {
         if (EvergreenHUD.instance.getMcVersion() == MCVersion.FORGE_1_8_9) {
             return lwjgl2;

@@ -16,7 +16,7 @@
 package co.uk.isxander.xanderlib.ui;
 
 import co.uk.isxander.evergreenhud.EvergreenHUD;
-import co.uk.isxander.evergreenhud.compatability.universal.impl.gui.UGuiScreenImp;
+import co.uk.isxander.evergreenhud.compatability.universal.impl.gui.screen.UGuiScreenImp;
 import co.uk.isxander.evergreenhud.utils.Constants;
 import me.kbrewster.eventbus.Subscribe;
 

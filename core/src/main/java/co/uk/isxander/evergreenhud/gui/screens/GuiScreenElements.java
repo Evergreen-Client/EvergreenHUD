@@ -17,9 +17,6 @@ package co.uk.isxander.evergreenhud.gui.screens;
 
 import co.uk.isxander.evergreenhud.EvergreenHUD;
 import co.uk.isxander.evergreenhud.elements.Element;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
 

@@ -16,7 +16,7 @@
 package co.uk.isxander.evergreenhud.compatability.universal.impl;
 
 import co.uk.isxander.evergreenhud.compatability.universal.impl.entity.UPlayer;
-import co.uk.isxander.evergreenhud.compatability.universal.impl.gui.UGuiScreenImp;
+import co.uk.isxander.evergreenhud.compatability.universal.impl.gui.screen.UGuiScreenImp;
 
 import java.io.File;
 

@@ -15,14 +15,13 @@
 
 package co.uk.isxander.evergreenhud.gui.elements;
 
+import co.uk.isxander.evergreenhud.compatability.universal.impl.gui.element.UGuiButtonImp;
+import co.uk.isxander.xanderlib.utils.GuiUtils;
 import net.apolloclient.utils.GLRenderer;
-import net.minecraft.client.Minecraft;
-import net.minecraftforge.fml.client.config.GuiButtonExt;
-import net.minecraftforge.fml.client.config.GuiUtils;
 
 import java.awt.*;
 
-public class GuiButtonAlt extends GuiButtonExt {
+public class GuiButtonAlt extends UGuiButtonImp {
     public GuiButtonAlt(int id, int xPos, int yPos, String displayString) {
         super(id, xPos, yPos, displayString);
     }
@@ -32,7 +31,7 @@ public class GuiButtonAlt extends GuiButtonExt {
     }
 
     @Override
-    public void drawButton(Minecraft mc, int mouseX, int mouseY) {
+    public void draw(int mouseX, int mouseY, float deltaTicks) {
         if (this.visible) {
             this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
             int hoverState = this.getHoverState(this.hovered);
@@ -56,6 +55,7 @@ public class GuiButtonAlt extends GuiButtonExt {
             if (strWidth > width - 6 && strWidth > ellipsisWidth)
                 buttonText = mc.fontRendererObj.trimStringToWidth(buttonText, width - 6 - ellipsisWidth).trim() + "...";
 
+            GuiUtils.drawCenteredString(fr, buttonText, this.xPosition );
             this.drawCenteredString(mc.fontRendererObj, buttonText, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, color);
         }
     }

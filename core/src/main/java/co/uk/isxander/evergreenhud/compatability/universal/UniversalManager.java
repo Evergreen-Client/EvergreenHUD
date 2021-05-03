@@ -17,7 +17,8 @@ package co.uk.isxander.evergreenhud.compatability.universal;
 
 import co.uk.isxander.evergreenhud.compatability.universal.impl.*;
 import co.uk.isxander.evergreenhud.compatability.universal.impl.command.UClientCommandManager;
-import co.uk.isxander.evergreenhud.compatability.universal.impl.gui.*;
+import co.uk.isxander.evergreenhud.compatability.universal.impl.gui.GuiProvider;
+import co.uk.isxander.evergreenhud.compatability.universal.impl.gui.screen.GuiScreenProvider;
 import co.uk.isxander.evergreenhud.compatability.universal.impl.keybind.UKeybindManager;
 import co.uk.isxander.evergreenhud.compatability.universal.impl.render.UTessellator;
 
@@ -26,7 +27,7 @@ public class UniversalManager {
     public static UMinecraft mcInstance;
     public static UResolution resolution;
     public static UGL11 gl11;
-    public static UGuiScreen guiImplementation;
+    public static GuiProvider guiProvider;
     public static UTessellator tessellator;
     public static UMouseUtils mouseUtils;
     public static UClientCommandManager commandManager;
