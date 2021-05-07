@@ -15,8 +15,10 @@
 
 package co.uk.isxander.evergreenhud.elements.impl;
 
+import co.uk.isxander.evergreenhud.compatability.universal.impl.ServerInfo;
 import co.uk.isxander.evergreenhud.elements.Element;
 import co.uk.isxander.evergreenhud.elements.ElementData;
+import co.uk.isxander.xanderlib.utils.MinecraftUtils;
 import net.minecraft.client.network.NetworkPlayerInfo;
 
 public class ElementPing extends Element {
@@ -35,9 +37,9 @@ public class ElementPing extends Element {
 
     @Override
     protected String getValue() {
-        NetworkPlayerInfo info = mc.getNetHandler().getPlayerInfo(mc.thePlayer.getGameProfile().getId());
-        if (info != null && info.getResponseTime() != 1)
-            ping = info.getResponseTime();
+        ServerInfo info = mc.getServerInfo();
+        if (!(info == null || (MinecraftUtils.isHypixel() && info.ping == 1)))
+            ping = info.ping;
 
         return Integer.toString(ping);
     }

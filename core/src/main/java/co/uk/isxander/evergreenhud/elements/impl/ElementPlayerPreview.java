@@ -15,8 +15,10 @@
 
 package co.uk.isxander.evergreenhud.elements.impl;
 
+import co.uk.isxander.evergreenhud.compatability.universal.impl.entity.UPlayer;
 import co.uk.isxander.evergreenhud.elements.Element;
 import co.uk.isxander.evergreenhud.elements.ElementData;
+import co.uk.isxander.evergreenhud.event.impl.RenderHud;
 import co.uk.isxander.evergreenhud.settings.impl.DoubleSetting;
 import co.uk.isxander.xanderlib.utils.HitBox2D;
 import net.apolloclient.utils.GLRenderer;
@@ -83,36 +85,36 @@ public class ElementPlayerPreview extends Element {
     }
 
     @Override
-    public void render(RenderGameOverlayEvent event) {
-        GlStateManager.pushMatrix();
-        GlStateManager.enableDepth();
+    public void render(RenderHud event) {
+        gl11.push();
+        gl11.enableDepth();
         HitBox2D hitbox = getHitbox(1, getPosition().getScale());
         GLRenderer.drawRectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height, getBgColor());
 
-        EntityPlayerSP ent = mc.thePlayer;
-        float posX = getPosition().getRawX(event.resolution);
-        float posY = getPosition().getRawY(event.resolution);
+        UPlayer ent = mc.player();
+        float posX = getPosition().getRawX(resolution);
+        float posY = getPosition().getRawY(resolution);
         float scale = getPosition().getScale() * 50;
 
-        GlStateManager.enableColorMaterial();
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(posX, posY, 50.0F);
-        GlStateManager.scale(-scale, scale, scale);
-        GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
+        gl11.enableColorMaterial();
+        gl11.push();
+        gl11.translate(posX, posY, 50.0F);
+        gl11.scale(-scale, scale, scale);
+        gl11.rotate(180.0F, 0.0F, 0.0F, 1.0F);
         float f = ent.renderYawOffset;
         float f1 = ent.rotationYaw;
         float f2 = ent.rotationPitch;
         float f3 = ent.prevRotationYawHead;
         float f4 = ent.rotationYawHead;
-        GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
+        gl11.rotate(135.0F, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
-        GlStateManager.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
+        gl11.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
         float rotation = 360 - (float) this.rotation.get();
         ent.renderYawOffset = rotation;
         ent.rotationYaw = rotation;
         ent.rotationYawHead = ent.rotationYaw;
         ent.prevRotationYawHead = ent.rotationYaw;
-        GlStateManager.translate(0.0F, 0.0F, 0.0F);
+        gl11.translate(0.0F, 0.0F, 0.0F);
         RenderManager rendermanager = mc.getRenderManager();
         rendermanager.setPlayerViewY(180.0F);
         rendermanager.setRenderShadow(false);
@@ -123,25 +125,23 @@ public class ElementPlayerPreview extends Element {
         ent.rotationPitch = f2;
         ent.prevRotationYawHead = f3;
         ent.rotationYawHead = f4;
-        GlStateManager.popMatrix();
+        gl11.pop();
         RenderHelper.disableStandardItemLighting();
-        GlStateManager.disableRescaleNormal();
-        GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-        GlStateManager.disableTexture2D();
-        GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
-        GlStateManager.popMatrix();
+        gl11.disableRescaleNormal();
+        gl11.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+        gl11.disableTexture();
+        gl11.setActiveTexture(OpenGlHelper.defaultTexUnit);
+        gl11.pop();
     }
 
     @Override
     public HitBox2D getHitbox(float posScale, float sizeScale) {
-        ScaledResolution res = new ScaledResolution(mc);
-
         float width = 80 * sizeScale;
         float extraWidth = getPaddingWidth() * sizeScale;
         float height = 120 * sizeScale;
         float extraHeight = getPaddingHeight() * sizeScale;
-        float x = getPosition().getRawX(res) - (width / 2f) / posScale;
-        float y = getPosition().getRawY(res) - height + (height / 8f) + (height / 128f) / posScale;
+        float x = getPosition().getRawX(resolution) - (width / 2f) / posScale;
+        float y = getPosition().getRawY(resolution) - height + (height / 8f) + (height / 128f) / posScale;
 
         return new HitBox2D(x - extraWidth, y - extraHeight, width + (extraWidth * 2), height + (extraHeight * 2));
     }

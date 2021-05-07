@@ -36,7 +36,7 @@ public class ElementBiome extends Element {
     protected String getValue() {
         String text = null;
 
-        if (mc.theWorld != null && mc.thePlayer != null) {
+        if (mc.theWorld != null && mc.player() != null) {
             BlockPos playerPos = new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);
             Chunk playerChunk = mc.theWorld.getChunkFromBlockCoords(playerPos);
             text = playerChunk.getBiome(playerPos, mc.theWorld.getWorldChunkManager()).biomeName;

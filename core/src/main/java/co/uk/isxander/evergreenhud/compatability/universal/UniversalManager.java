@@ -18,7 +18,6 @@ package co.uk.isxander.evergreenhud.compatability.universal;
 import co.uk.isxander.evergreenhud.compatability.universal.impl.*;
 import co.uk.isxander.evergreenhud.compatability.universal.impl.command.UClientCommandManager;
 import co.uk.isxander.evergreenhud.compatability.universal.impl.gui.GuiProvider;
-import co.uk.isxander.evergreenhud.compatability.universal.impl.gui.screen.GuiScreenProvider;
 import co.uk.isxander.evergreenhud.compatability.universal.impl.keybind.UKeybindManager;
 import co.uk.isxander.evergreenhud.compatability.universal.impl.render.UTessellator;
 

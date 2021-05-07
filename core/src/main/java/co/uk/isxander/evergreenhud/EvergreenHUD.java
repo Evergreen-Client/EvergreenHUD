@@ -83,21 +83,21 @@ public class EvergreenHUD implements Constants {
         }));
         EVENT_BUS.register(elementManager = new ElementManager());
 
-
-        XanderLib.getInstance().getGuiEditor().addModifier(GuiOptions.class, new AbstractGuiModifier() {
-            @Override
-            public void onInitGuiPost(GuiScreen screen, List<GuiButton> buttonList) {
-                if (mc.theWorld != null)
-                    buttonList.add(new GuiButton(991, screen.width / 2 + 5, screen.height / 6 + 24 - 6, 150, 20, "EvergreenHUD..."));
-            }
-
-            @Override
-            public void onActionPerformedPost(GuiScreen screen, List<GuiButton> buttonList, GuiButton button) {
-                if (button.id == 991) {
-                    mc.displayGuiScreen(new GuiMain());
-                }
-            }
-        });
+        // TODO: 04/05/2021 add this
+//        XanderLib.getInstance().getGuiEditor().addModifier(GuiOptions.class, new AbstractGuiModifier() {
+//            @Override
+//            public void onInitGuiPost(GuiScreen screen, List<GuiButton> buttonList) {
+//                if (mc.theWorld != null)
+//                    buttonList.add(new GuiButton(991, screen.width / 2 + 5, screen.height / 6 + 24 - 6, 150, 20, "EvergreenHUD..."));
+//            }
+//
+//            @Override
+//            public void onActionPerformedPost(GuiScreen screen, List<GuiButton> buttonList, GuiButton button) {
+//                if (button.id == 991) {
+//                    mc.displayGuiScreen(new GuiMain());
+//                }
+//            }
+//        });
 
         if (isFirstLaunch()) {
             ElementText textElement = new ElementText();

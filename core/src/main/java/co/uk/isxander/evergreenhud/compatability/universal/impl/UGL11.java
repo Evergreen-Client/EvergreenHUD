@@ -556,6 +556,7 @@ public interface UGL11 {
     void scale(float x, float y, float z);
     void translate(float x, float y, float z);
     void color(float r, float g, float b, float a);
+    void rotate(float angle, float x, float y, float z);
 
     void bindTexture(int texture);
 

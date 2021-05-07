@@ -17,9 +17,8 @@ package co.uk.isxander.evergreenhud.elements.impl;
 
 import co.uk.isxander.evergreenhud.elements.Element;
 import co.uk.isxander.evergreenhud.elements.ElementData;
+import co.uk.isxander.evergreenhud.event.impl.ClientTickEvent;
 import co.uk.isxander.evergreenhud.settings.impl.DoubleSetting;
-import net.minecraft.client.renderer.chunk.RenderChunk;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class ElementChunkUpdates extends Element {
 
@@ -44,7 +43,7 @@ public class ElementChunkUpdates extends Element {
     }
 
     @Override
-    public void onClientTick(TickEvent.ClientTickEvent event) {
+    public void onClientTick(ClientTickEvent event) {
         if (System.currentTimeMillis() - time > updateTime.get() * 1000L) {
             time = System.currentTimeMillis();
             chunkUpdates = Integer.toString(RenderChunk.renderChunksUpdated);

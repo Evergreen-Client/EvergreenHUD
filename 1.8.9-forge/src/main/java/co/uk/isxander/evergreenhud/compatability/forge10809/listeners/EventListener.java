@@ -16,10 +16,12 @@
 package co.uk.isxander.evergreenhud.compatability.forge10809.listeners;
 
 import co.uk.isxander.evergreenhud.EvergreenHUD;
+import co.uk.isxander.evergreenhud.compatability.forge10809.providers.UEntityProvider;
 import co.uk.isxander.evergreenhud.event.impl.ClientTickEvent;
 import co.uk.isxander.evergreenhud.event.impl.RenderEvent;
 import co.uk.isxander.evergreenhud.event.impl.RenderHud;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -44,6 +46,11 @@ public class EventListener {
         if (event.phase != TickEvent.Phase.END) return;
 
         EvergreenHUD.EVENT_BUS.post(new ClientTickEvent());
+    }
+
+    @SubscribeEvent
+    public void onAttackEntity(AttackEntityEvent event) {
+        EvergreenHUD.EVENT_BUS.post(new co.uk.isxander.evergreenhud.event.impl.AttackEntityEvent(UEntityProvider.getEntity(event.target), UEntityProvider.getPlayer(event.entityPlayer)));
     }
 
 }

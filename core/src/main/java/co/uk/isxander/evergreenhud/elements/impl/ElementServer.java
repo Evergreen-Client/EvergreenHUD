@@ -32,7 +32,7 @@ public class ElementServer extends Element {
 
     @Override
     protected String getValue() {
-        return (mc.getCurrentServerData() == null ? "Singleplayer" : mc.getCurrentServerData().serverIP);
+        return (mc.serverIP() == null ? "Singleplayer" : mc.serverIP());
     }
 
     @Override

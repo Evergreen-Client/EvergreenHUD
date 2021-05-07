@@ -15,17 +15,12 @@
 
 package co.uk.isxander.evergreenhud.elements.impl;
 
+import co.uk.isxander.evergreenhud.compatability.universal.impl.entity.UPlayer;
 import co.uk.isxander.evergreenhud.elements.Element;
 import co.uk.isxander.evergreenhud.elements.ElementData;
+import co.uk.isxander.evergreenhud.event.impl.AttackEntityEvent;
+import co.uk.isxander.evergreenhud.event.impl.ClientTickEvent;
 import co.uk.isxander.evergreenhud.settings.impl.BooleanSetting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.text.DecimalFormat;
 
@@ -58,8 +53,8 @@ public class ElementReach extends Element {
 
     @Override
     public void onAttackEntity(AttackEntityEvent event) {
-        if (event.entity instanceof EntityPlayerSP) {
-            double num = getReachDistanceFromEntity(event.target);
+        if (event.attacker.id() == mc.player().id()) {
+            double num = ((UPlayer)event.attacker).calculateReachDistFromEntity(event.target);
             DecimalFormat df = new DecimalFormat(trailingZeros.get() ? "0.0" : "#.#");
             reach = df.format(num);
             lastHit = System.currentTimeMillis();
@@ -67,39 +62,8 @@ public class ElementReach extends Element {
     }
 
     @Override
-    public void onClientTick(TickEvent.ClientTickEvent event) {
-        if (Minecraft.getSystemTime() - lastHit > 3000) reach = "0";
-    }
-
-    private double getReachDistanceFromEntity(Entity entity) {
-        mc.mcProfiler.startSection("Calculate Reach Dist");
-
-        // How far will ray travel before ending
-        double maxSize = 6D; // use 6 because creative mode is 6 and any more is literally reach
-        // Bounding box of entity
-        AxisAlignedBB otherBB = entity.getEntityBoundingBox();
-        // This is where people found out that F3+B is not accurate for hitboxes,
-        // it makes hitboxes bigger by certain amount
-        float collisionBorderSize = entity.getCollisionBorderSize();
-        AxisAlignedBB otherHitbox = otherBB.expand(collisionBorderSize, collisionBorderSize, collisionBorderSize);
-        // Not quite sure what the difference is between these two vectors
-        // In actual code where this is taken from, partialTicks is always 1.0
-        // So this won't decrease accuracy
-        Vec3 eyePos = mc.thePlayer.getPositionEyes(1.0F);
-        Vec3 lookPos = mc.thePlayer.getLook(1.0F);
-        // Get vector for raycast
-        Vec3 adjustedPos = eyePos.addVector(lookPos.xCoord * maxSize, lookPos.yCoord * maxSize, lookPos.zCoord * maxSize);
-        MovingObjectPosition movingObjectPosition = otherHitbox.calculateIntercept(eyePos, adjustedPos);
-        Vec3 otherEntityVec;
-        // This will trigger if hit distance is more than maxSize
-        if (movingObjectPosition == null)
-            return -1;
-        otherEntityVec = movingObjectPosition.hitVec;
-        // finally calculate distance between both vectors
-        double dist = eyePos.distanceTo(otherEntityVec);
-
-        mc.mcProfiler.endSection();
-        return dist;
+    public void onClientTick(ClientTickEvent event) {
+        if (System.currentTimeMillis() - lastHit > 3000) reach = "0";
     }
 
 }

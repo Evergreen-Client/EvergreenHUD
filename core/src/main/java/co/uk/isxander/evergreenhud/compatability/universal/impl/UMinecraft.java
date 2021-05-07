@@ -36,4 +36,6 @@ public interface UMinecraft {
 
     int renderedEntityCount();
 
+    ServerInfo getServerInfo();
+
 }
